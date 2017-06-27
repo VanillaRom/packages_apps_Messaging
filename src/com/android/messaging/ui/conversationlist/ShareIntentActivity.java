@@ -35,9 +35,12 @@ import com.android.messaging.util.ContentType;
 import com.android.messaging.util.LogUtil;
 import com.android.messaging.util.MediaMetadataRetrieverWrapper;
 import com.android.messaging.util.FileUtil;
+import com.android.messaging.util.UiUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.android.messaging.R;
 
 public class ShareIntentActivity extends BaseBugleActivity implements
         ShareIntentFragment.HostInterface {
@@ -100,7 +103,10 @@ public class ShareIntentActivity extends BaseBugleActivity implements
                 }
             } else {
                 // Unsupported content type.
-                Assert.fail("Unsupported shared content type for " + contentUri + ": " + contentType
+                finish();
+                UiUtils.showToastAtBottom(R.string.attachment_load_failed_dialog_message);
+                LogUtil.e(LogUtil.BUGLE_TAG,
+                        "Unsupported shared content type for " + contentUri + ": " + contentType
                         + " (" + intent.getType() + ")");
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
@@ -120,7 +126,9 @@ public class ShareIntentActivity extends BaseBugleActivity implements
                 }
             } else {
                 // Unsupported content type.
-                Assert.fail("Unsupported shared content type: " + contentType);
+                finish();
+                UiUtils.showToastAtBottom(R.string.attachment_load_failed_dialog_message);
+                LogUtil.e(LogUtil.BUGLE_TAG, "Unsupported shared content type: " + contentType);
             }
         } else {
             // Unsupported action.
